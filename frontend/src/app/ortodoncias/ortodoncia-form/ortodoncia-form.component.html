@@ -1,0 +1,208 @@
+<form #ortodonciaForm="ngForm">
+  <section class="row">
+    <article class="col-8">
+          <div class="row">
+            <article class="col">
+              <label> Tipo de Trabajo</label>
+              <textarea
+              type="text"
+              class="form-control"
+              [(ngModel)]="ortodoncia.tipoTrabajo"
+              placeholder="Escriba Tipo de Trabajo"
+              name="tipoTrabajo"
+              rows="4"
+              required
+              minlength="8"
+              maxlength="50"
+              #tipoTrabajo="ngModel"
+              [ngClass]="{
+              'is-invalid': tipoTrabajo.invalid && (tipoTrabajo.dirty || tipoTrabajo.touched),
+              'is-valid': !tipoTrabajo.invalid
+              }"></textarea>
+              <div
+                class="text-danger"
+              *ngIf="tipoTrabajo.invalid && (tipoTrabajo.dirty || tipoTrabajo.touched)">
+              <div *ngIf="tipoTrabajo.errors?.['required']">
+                El Tipo de Trabajo es obligatorio
+              </div>
+              <div *ngIf="tipoTrabajo.errors?.['minlength']">
+                El tipo de Trabajo debe tener minimo 8 caracteres y maximo 32 caracteres
+              </div>
+              </div>
+            </article>
+            <article class="col">
+              <div class="nav justify-content-center">
+                <div class="flex-column">
+                  <p>  ID Trabajo:  <input type="text" name="ID Trabajo" size="30" #id="ngModel" [(ngModel)]="ortodoncia.id" readonly="readonly"></p>
+                  <label>Fecha Entrada Ortodoncia<sup class="text-danger">*</sup></label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="ortodoncia.fechaEntrada"
+                    placeholder="dd-mm-aaaa"
+                    name="fechaent" required
+                    min="2022-01-01" max="2025-01-01"
+                    #fechaent="ngModel"
+                    [ngClass]="{
+                      'is-invalid': fechaent.invalid && (fechaent.dirty || fechaent.touched),
+                      'is-valid': !fechaent.invalid
+                    }"
+                  />
+                  <div class="text-danger"
+                    *ngIf="fechaent.invalid && (fechaent.dirty || fechaent.touched)">
+                      <div *ngIf="fechaent.errors?.['required']">
+                        La fecha de Entrada de la Ortodoncia es obligatorio
+                      </div>
+                  </div>
+                  <label>Fecha Salida Ortodoncia <sup class="text-danger">*</sup></label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    [(ngModel)]="ortodoncia.fechaSalida"
+                    placeholder="dd-mm-aaaa"
+                    name="fechasal"
+                    required
+                    min="2022-01-01"
+                    max="2025-01-01"
+                    #fechasal="ngModel"
+                    [ngClass]="{
+                      'is-invalid': fechasal.invalid && (fechasal.dirty || fechasal.touched),
+                      'is-valid': !fechasal.invalid
+                    }"
+                  />
+                  <div class="text-danger"
+                    *ngIf="fechasal.invalid && (fechasal.dirty || fechasal.touched)">
+                      <div *ngIf="fechasal.errors?.['required']">
+                        La fecha de Salida de la Ortodoncia es obligatorio
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+          <div class="nav justify-content-center">
+                <label for="material">Nuevo Material: {{disabledMaterial}}</label>
+                  <select name="material" id="material" [disabled]="disabledMaterial" (click)="nuevoMaterial()">
+                    <option value="alambre"  data-bs-toggle="modal" data-bs-target="#alambre">Alambre</option>
+                    <option value="tornillo" data-bs-toggle="modal" data-bs-target="#tornillo">Tornillo</option>
+                  </select>
+               <span class="nav align-content-center">MATERIALES NECESARIOS</span>
+          </div>
+           <div class="row">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">DESCRIPCION</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor = "let material of materiales">
+                    <td>
+                      <span *ngIf="material.urlAlambre">alambre</span>
+                      <span *ngIf="material.urlTornillo">tornillo</span>
+                    </td>
+                    <td>{{material.cantidad}}</td>
+                    <td>{{material.precio}}</td>
+                    <td>
+                      <button (click)="editarMaterial(material)" *ngIf="material.urlAlambre" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#alambre">Editar <fa-icon [icon] = "faPencil"></fa-icon></button>
+                      <button (click)="editarMaterial(material)" *ngIf="material.urlTornillo" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#tornillo">Editar <fa-icon [icon] = "faPencil"></fa-icon></button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="eliminarMaterial(material.id)">Borrar<fa-icon [icon] = "faBasura"></fa-icon></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+           </div>
+           <div class="row">
+             <div class="col-10"></div>
+             <div class="col-2">
+                <label>Importe ortodoncia <sup class="text-danger">*</sup></label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="ortodoncia.importeOrtodoncia"
+                  readonly="readonly"
+                  name="importe"
+                  #importe="ngModel"
+                />
+              </div>
+            </div>
+            <div class="container">
+
+              <div class="form-row justify-content-between pt-5">
+                <div class="col-lg-5 col-md-12">
+                  <button
+                      class="btn btn-primary"
+                      role="button"
+                      (click)="create()"
+                      [disabled]="!ortodonciaForm.valid">
+                    <span *ngIf="ortodonciaId != '-1'">Actualizar ortodoncia</span>
+                    <span *ngIf="ortodonciaId =='-1'">Crear ortodoncia</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-row justify-content-between pt-5">
+                <div class="col-lg-5 col-md-12">
+                  <button type="button"
+                  class="btn btn-primary"
+                  role="button"
+                  routerLink="/ortodoncias"
+                  >
+                    Listar Ortodoncias
+                  </button>
+                </div>
+              </div>
+            </div>
+    </article>
+
+    <article class="col-4">
+          <img  width="300" height="400" src="assets/odontograma.gif" alt="Odontograma" rows="10" col="2">
+          <div class="row align-items-end">
+            <div class="col">
+              <div class="nav justify-content-start">
+                <a [routerLink]="['/ortodoncias/formulario']" routerLinkActive="router-link-active">
+                  <input class="btn btn-danger btn-sm" type="reset" (click)="reset()" value="Limpiar formulario">
+                </a>
+              </div>
+            </div>
+          </div>
+    </article>
+  </section>
+</form>
+
+
+<!-- Modal Alambre-->
+<div class="modal fade" id="alambre" tabindex="-1" aria-labelledby="alambre" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelAlambre"></h5>
+        <button #closeAlambre type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+      <div class="modal-body">
+        <app-alambre [ortodonciaId]="ortodoncia.id" [alambre]="materialSeleccionado" (alambreEvent)="incluirMaterial($event)"></app-alambre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Tornillo-->
+<div class="modal fade" id="tornillo" tabindex="-1" aria-labelledby="tornillo" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabelTornillo"></h5>
+        <button #closeTornillo type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+      </div>
+      <div class="modal-body">
+        <app-tornillo [ortodonciaId]="ortodoncia.id"  [tornillo]="materialSeleccionado" (tornilloEvent)="incluirMaterial($event)"></app-tornillo>
+      </div>
+    </div>
+  </div>
+</div>

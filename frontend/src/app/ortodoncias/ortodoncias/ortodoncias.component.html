@@ -1,0 +1,37 @@
+
+  <section>
+    <div class="container-fluid">
+    <div class="row align-item-center">
+      <div class="col-2">TIPO_DE_TRABAJO</div>
+      <div class="col-2">ID DEL TRABAJO</div>
+      <div class="col-2">FECHA_ENTRADA</div>
+      <div class="col-2">FECHA_SALIDA</div>
+      <!-- <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div> -->
+    </div>
+    </div>
+    </section>
+
+    <div *ngFor = "let ortodoncia of ortodoncias">
+      <app-ortodoncia-item [ortodoncia]="ortodoncia"
+      (ortodonciaSeleccionada) = "verDatos($event)"
+      (ortodonciaEliminada)="ortodonciaEliminar($event)"></app-ortodoncia-item>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalOrtodoncia" tabindex="-1" role="dialog" aria-labelledby="datosOrtodoncia"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="datosOrtodoncia">Datos Completos de Ortodoncia</h5>
+          </div>
+          <div class="modal-body">
+            <app-ortodoncia [ortodoncia] ='ortodonciaVerDatos' (ortodonciaEliminar) = 'ortodonciaEliminar($event)'></app-ortodoncia>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+

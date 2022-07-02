@@ -1,0 +1,15 @@
+<div class="row mb-2" >
+  <hr class='w-100'>
+  <div class="col-2"><a class="" data-bs-toggle="modal"
+    data-bs-target="#modalOrtodoncia" (click)='ortodonciaSeleccionada.emit(ortodoncia)'>{{ortodoncia.tipoTrabajo}}</a></div>
+  <div class="col-2">{{ortodoncia.id}}</div>
+  <div class="col-2">{{ortodoncia.fechaEntrada | date: 'dd-MM-yyyy'}}</div>
+  <div class="col-2">{{ortodoncia.fechaSalida | date: 'dd-MM-yyyy'}}</div>
+  <div class="col-2">
+    <div class="container">
+    <button class="btn btn-info" routerLink = "/ortodoncias/formulario/{{ortodoncia.id}}">Editar</button>
+
+    <button class="btn btn-danger" routerLink="/ortodoncias"  (click)="onOrtodonciaEliminar()">Borrar</button>
+    </div>
+  </div>
+</div>

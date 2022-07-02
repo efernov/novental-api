@@ -1,0 +1,48 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.6'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	
+	id 'eclipse'
+	id 'application'
+}
+
+group = 'novodental'
+version = '1.0.1'
+sourceCompatibility = '1.8'
+
+
+
+	repositories {
+		mavenCentral()
+		jcenter()
+		maven { url 'https://jitpack.io' }
+		}
+
+dependencies {
+	implementation 'com.github.efernov:novodental-libreria:1d434be5e6'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+application {
+	// Define the main class for the application.
+	mainClassName = 'novodental.novodental.NovodentalApplication'
+	}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+
+tasks.named('jar') {
+	enabled = false
+}
+
+
+
